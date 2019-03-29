@@ -7,11 +7,13 @@ services:
     volumes:
       - ./:/var/www
     environment:
-      XDEBUG_CONFIG: "remote_host=192.168.220.1 remote_enable=1"
+      XDEBUG_CONFIG: "remote_host=host.docker.internal remote_enable=1"
       PHP_IDE_CONFIG: "serverName=Docker"
-    working_dir: /code
-    networks:
-      - internal
+    working_dir: /var/www/code
+#    networks:
+#      - internal
+    depends_on:
+      - mysql
   nginx:
     build:
       context: docker/nginx
@@ -21,8 +23,8 @@ services:
       - "80:80"
     depends_on:
       - php-fpm
-    networks:
-      - internal
+#    networks:
+#      - internal
 
   mysql:
     image: mysql
@@ -35,15 +37,15 @@ services:
       MYSQL_USER: user
       MYSQL_PASSWORD: 123123
     volumes:
-      - mysql:/var/lib/mysql
+      - dbdata:/var/lib/mysql
 
-networks:
-  internal:
-    driver: bridge
-    ipam:
-      driver: default
-      config:
-        - subnet: 192.168.220.0/28
+#networks:
+#  internal:
+#    driver: bridge
+#    ipam:
+#      driver: default
+#      config:
+#        - subnet: 192.168.220.0/28
 
 volumes:
-  mysql:
+  dbdata:

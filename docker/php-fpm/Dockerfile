@@ -8,4 +8,4 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 ADD ./docker/php-fpm/php.ini /usr/local/etc/php/php.ini
 
-WORKDIR /var/www/code
+RUN docker-php-ext-install pdo_mysql
