@@ -37,7 +37,7 @@ class Flight extends \yii\db\ActiveRecord
             [['departure_airport_id', 'arrival_airport_id'], 'integer'],
             [['departure_date_time', 'arrival_date_time'], 'safe'],
             [['flight_number'], 'string', 'max' => 50],
-            ['departure_airport_id', 'compare', 'compareAttribute' => 'arrival_airport_id', 'operator' => '!=', 'message' => 'You cannot invite yourself.'],
+            ['departure_airport_id', 'compare', 'compareAttribute' => 'arrival_airport_id', 'operator' => '!=', 'message' => 'Airports cannot be the same'],
             [['departure_airport_id'], 'exist', 'skipOnError' => true, 'targetClass' => Airport::className(), 'targetAttribute' => ['departure_airport_id' => 'id']],
             [['departure_airport_id'], 'exist', 'skipOnError' => true, 'targetClass' => Airport::className(), 'targetAttribute' => ['departure_airport_id' => 'id']],
         ];
