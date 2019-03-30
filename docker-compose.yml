@@ -21,13 +21,15 @@ services:
       - ./:/var/www
     ports:
       - "80:80"
+    links:
+      - mysql
     depends_on:
       - php-fpm
 #    networks:
 #      - internal
 
   mysql:
-    image: mysql
+    image: mysql:5.7
     restart: always
     ports:
       - "3306:3306"
