@@ -4,6 +4,7 @@ services:
     build:
       context: .
       dockerfile: docker/php-fpm/Dockerfile
+    container_name: riabchenko-test-php
     volumes:
       - ./:/var/www
     environment:
