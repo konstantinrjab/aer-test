@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Flight;
 use app\models\requests\SearchRequest;
 use Yii;
 use yii\web\BadRequestHttpException;
@@ -24,9 +25,19 @@ class SearchController extends \yii\rest\Controller
         $searchRequest = new SearchRequest(Yii::$app->request->post('searchQuery'));
 
         $searchRequest->validate();
-//        var_dump($searchRequest);
-        var_dump($searchRequest->errors);
+        if ($searchRequest->hasErrors()) {
+            return $searchRequest->errors;
+        }
 
-        return '123';
+        $query = Flight::find()
+                       ->joinWith('arrivalAirport aa')
+                       ->joinWith('departureAirport da')
+                       ->where("departure_date_time 
+                       BETWEEN '$searchRequest->departureDate  00:00:00' 
+                       AND '$searchRequest->departureDate  23:59:59'")
+                       ->andWhere(['aa.name' => $searchRequest->arrivalAirport])
+                       ->andWhere(['da.name' => $searchRequest->departureAirport]);
+
+        return $query->all();
     }
 }

@@ -44,4 +44,13 @@ class Transporter extends \yii\db\ActiveRecord
             'code' => 'Code',
         ];
     }
+
+    public function fields()
+    {
+        $fields = parent::fields();
+
+        unset($fields['id']);
+
+        return $fields;
+    }
 }
