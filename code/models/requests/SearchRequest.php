@@ -17,7 +17,7 @@ class SearchRequest extends Model
             [['departureAirport', 'arrivalAirport', 'departureDate'], 'required'],
             [['departureAirport', 'arrivalAirport', 'departureDate'], 'string'],
             ['departureDate', 'date', 'format' => 'php:Y-m-d'],
-            ['departureAirport', 'compare', 'compareAttribute' => 'arrivalAirport', 'operator' => '!=', 'message' => 'Airports cannot be the same'],
+            ['departureAirport', 'compare', 'compareAttribute' => 'arrivalAirport', 'operator' => '!=', 'message' => 'Departure and arrival airports cannot be the same'],
             [['arrivalAirport'], 'exist', 'skipOnError' => true, 'targetClass' => Airport::class, 'targetAttribute' => ['arrivalAirport' => 'name']],
             [['departureAirport'], 'exist', 'skipOnError' => true, 'targetClass' => Airport::class, 'targetAttribute' => ['departureAirport' => 'name']],
         ];

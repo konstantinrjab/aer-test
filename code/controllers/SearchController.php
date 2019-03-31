@@ -4,12 +4,36 @@ namespace app\controllers;
 
 use app\models\Flight;
 use app\models\requests\SearchRequest;
+use app\models\User;
 use Yii;
 use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
 
 class SearchController extends \yii\rest\Controller
 {
+    public function behaviors()
+    {
+        return [
+            'contentNegotiator' => [
+                'class'       => \yii\filters\ContentNegotiator::className(),
+                'formatParam' => '_format',
+                'formats'     => [
+                    'application/json' => \yii\web\Response::FORMAT_JSON,
+                    'application/xml'  => \yii\web\Response::FORMAT_XML,
+                ],
+            ],
+            'basicAuth'         => [
+                'class' => \yii\filters\auth\HttpBasicAuth::className(),
+                'auth'  => function ($username, $password) {
+                    $user = User::findByUsername($username);
+                    if ($user && $user->validatePassword($password)) {
+                        return $user;
+                    }
+                    return null;
+                },
+            ],
+        ];
+    }
 
     /**
      * @return array|void
@@ -18,8 +42,6 @@ class SearchController extends \yii\rest\Controller
      */
     public function actionIndex()
     {
-        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-
         if (!Yii::$app->request->post('searchQuery')) {
             throw new BadRequestHttpException();
         }

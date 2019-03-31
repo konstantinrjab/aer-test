@@ -24,7 +24,7 @@ $airports = \yii\helpers\ArrayHelper::map(\app\models\Airport::find()->asArray()
 
         <?php ActiveForm::end(); ?>
 
-        <h2 style="padding-top: 30px;">Result</h2>
+        <h2 style="padding-top: 30px;">Response</h2>
         <pre id="result">
 
         </pre>
@@ -47,10 +47,10 @@ $('button').on('click', function (e) {
             },
         },
         success: function (data, textStatus, jqXHR) {
-            $('#result').html(JSON.stringify(data,null,'\t'));
+            $('#result').html(JSON.stringify(data, null, '\t'));
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            $('#result').html(errorThrown);
+            $('#result').html(JSON.stringify(jqXHR.responseJSON, null, '\t'));
         }
     });
 });
