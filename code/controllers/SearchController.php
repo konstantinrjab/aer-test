@@ -18,7 +18,7 @@ class SearchController extends \yii\rest\Controller
      */
     public function actionIndex()
     {
-        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;$r = Yii::$app->request->post();
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 
         if (!Yii::$app->request->post('searchQuery')) {
             throw new BadRequestHttpException();
@@ -38,13 +38,14 @@ class SearchController extends \yii\rest\Controller
                        BETWEEN '$searchRequest->departureDate  00:00:00' 
                        AND '$searchRequest->departureDate  23:59:59'")
                        ->andWhere(['aa.name' => $searchRequest->arrivalAirport])
-                       ->andWhere(['da.name' => $searchRequest->departureAirport]);
+                       ->andWhere(['da.name' => $searchRequest->departureAirport])
+                       ->orderBy('departure_date_time');
 
         if (empty($query->all())) {
             throw new NotFoundHttpException();
         }
         return [
-            'searchQuery' => $searchRequest,
+            'searchQuery'   => $searchRequest,
             'searchResults' => $query->all()
         ];
     }
