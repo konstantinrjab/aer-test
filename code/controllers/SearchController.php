@@ -18,7 +18,7 @@ class SearchController extends \yii\rest\Controller
      */
     public function actionIndex()
     {
-        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;$r = Yii::$app->request->post();
 
         if (!Yii::$app->request->post('searchQuery')) {
             throw new BadRequestHttpException();

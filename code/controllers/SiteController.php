@@ -47,10 +47,6 @@ class SiteController extends Controller
             'error' => [
                 'class' => 'yii\web\ErrorAction',
             ],
-            'captcha' => [
-                'class' => 'yii\captcha\CaptchaAction',
-                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
-            ],
         ];
     }
 
@@ -62,6 +58,10 @@ class SiteController extends Controller
     public function actionIndex()
     {
         $model = new SearchForm();
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+//            $model->sendSearchRequest();
+        }
 
         return $this->render('index', ['model' => $model]);
     }
