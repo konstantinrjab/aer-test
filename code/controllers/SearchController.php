@@ -6,13 +6,15 @@ use app\models\Flight;
 use app\models\requests\SearchRequest;
 use Yii;
 use yii\web\BadRequestHttpException;
+use yii\web\NotFoundHttpException;
 
 class SearchController extends \yii\rest\Controller
 {
 
     /**
-     * @return string
+     * @return array|void
      * @throws BadRequestHttpException
+     * @throws NotFoundHttpException
      */
     public function actionIndex()
     {
@@ -38,6 +40,12 @@ class SearchController extends \yii\rest\Controller
                        ->andWhere(['aa.name' => $searchRequest->arrivalAirport])
                        ->andWhere(['da.name' => $searchRequest->departureAirport]);
 
-        return $query->all();
+        if (empty($query->all())) {
+            throw new NotFoundHttpException();
+        }
+        return [
+            'searchQuery' => $searchRequest,
+            'searchResults' => $query->all()
+        ];
     }
 }
